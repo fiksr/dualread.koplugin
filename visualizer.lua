@@ -40,7 +40,7 @@ function Visualizer.formatDualReadCard(original_text, raw_ai_text, target_lang_n
             local item = l:gsub("^[•%-%*]%s*", ""):gsub("%*%*", "")
             table.insert(out, "  • " .. item)
         else
-            table.insert(out, "  " .. l:gsub("%*%*", ""))
+            table.insert(out, "  " .. (l:gsub("%*%*", "")))
         end
     end
 
@@ -63,7 +63,7 @@ function Visualizer.formatGrammarCard(phrase, raw_ai_text, target_lang_name)
             local item = l:gsub("^[•%-%*]%s*", ""):gsub("%*%*", "")
             table.insert(out, "  • " .. item)
         else
-            table.insert(out, "  " .. l:gsub("%*%*", ""))
+            table.insert(out, "  " .. (l:gsub("%*%*", "")))
         end
     end
 
