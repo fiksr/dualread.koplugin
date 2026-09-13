@@ -25,8 +25,21 @@ local function splitByChar(str, sep)
     return parts
 end
 
+local function stripEmojis(str)
+    if not str then return "" end
+    local s = str:gsub("[ -¤][
+8-91][
+8-91][
+8-91]", "")
+    s = s:gsub("984[d-9]", "")
+    return s
+end
+
 local function stripMarkdown(s)
     if not s then return "" end
+    local clean = stripEmojis(s):gsub("%*%*", ""):gsub("%*", ""):gsub("^[#%s]+", ""):gsub("^%s+", ""):gsub("%s+$", "")
+    return clean
+end
     local clean = s:gsub("%*%*", ""):gsub("%*", ""):gsub("^[#%s]+", ""):gsub("^%s+", ""):gsub("%s+$", "")
     return clean
 end
