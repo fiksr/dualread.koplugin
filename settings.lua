@@ -18,13 +18,13 @@ local DEFAULT_MODELS = {
 }
 
 local TARGET_LANGUAGES = {
-    { id = "serbian", name = "🇷🇸 Serbian (Srpski - Latin)", instruction = "Serbian (Latin alphabet / latinica)" },
-    { id = "english", name = "🇬🇧 English", instruction = "English" },
-    { id = "german", name = "🇩🇪 German (Deutsch)", instruction = "German (Deutsch)" },
-    { id = "spanish", name = "🇪🇸 Spanish (Español)", instruction = "Spanish (Español)" },
-    { id = "french", name = "🇫🇷 French (Français)", instruction = "French (Français)" },
-    { id = "italian", name = "🇮🇹 Italian (Italiano)", instruction = "Italian (Italiano)" },
-    { id = "russian", name = "🇷🇺 Russian (Русский)", instruction = "Russian (Русский)" },
+    { id = "serbian", name = "Serbian (Srpski - Latin)", instruction = "Serbian (Latin alphabet / latinica)"},
+    { id = "english", name = "English", instruction = "English"},
+    { id = "german", name = "German (Deutsch)", instruction = "German (Deutsch)"},
+    { id = "spanish", name = "Spanish (Español)", instruction = "Spanish (Español)"},
+    { id = "french", name = "French (Français)", instruction = "French (Français)"},
+    { id = "italian", name = "Italian (Italiano)", instruction = "Italian (Italiano)"},
+    { id = "russian", name = "Russian (Русский)", instruction = "Russian (Русский)"},
 }
 
 function Settings:new()
@@ -34,14 +34,14 @@ end
 
 function Settings:get(key, default)
     if not G_reader_settings then return default end
-    local val = G_reader_settings:readSetting("dualread_" .. key)
+    local val = G_reader_settings:readSetting("dualread_".. key)
     if val ~= nil then return val end
     return default
 end
 
 function Settings:save(key, val)
     if not G_reader_settings then return end
-    G_reader_settings:saveSetting("dualread_" .. key, val)
+    G_reader_settings:saveSetting("dualread_".. key, val)
 end
 
 function Settings:getTargetLanguage()
@@ -76,12 +76,12 @@ end
 
 function Settings:getModel()
     local prov = self:getProvider()
-    return self:get("model_" .. prov, DEFAULT_MODELS[prov] or "openai/gpt-oss-120b")
+    return self:get("model_".. prov, DEFAULT_MODELS[prov] or "openai/gpt-oss-120b")
 end
 
 function Settings:setModel(m)
     local prov = self:getProvider()
-    self:save("model_" .. prov, m)
+    self:save("model_".. prov, m)
 end
 
 function Settings:getOllamaUrl()
@@ -94,24 +94,24 @@ end
 
 function Settings:getApiKey(prov)
     prov = prov or self:getProvider()
-    local val = self:get("api_key_" .. prov, "")
+    local val = self:get("api_key_".. prov, "")
     if val and #val > 0 then return val end
 
     -- Fallback to shared keys from bookrecap, mindmap, or morningpaper
     if G_reader_settings then
-        local shared_br = G_reader_settings:readSetting("bookrecap_api_key_" .. prov)
+        local shared_br = G_reader_settings:readSetting("bookrecap_api_key_".. prov)
         if shared_br and #shared_br > 0 then return shared_br end
 
-        local shared_mm = G_reader_settings:readSetting("mindmap_api_key_" .. prov)
+        local shared_mm = G_reader_settings:readSetting("mindmap_api_key_".. prov)
         if shared_mm and #shared_mm > 0 then return shared_mm end
 
-        local shared_mp = G_reader_settings:readSetting("morningpaper_api_key_" .. prov)
+        local shared_mp = G_reader_settings:readSetting("morningpaper_api_key_".. prov)
         if shared_mp and #shared_mp > 0 then return shared_mp end
 
         local legacy = G_reader_settings:readSetting("bookrecap_api_key")
         if legacy and #legacy > 0 then
-            if prov == "groq" and legacy:sub(1, 4) == "gsk_" then return legacy end
-            if prov == "gemini" and legacy:sub(1, 4) == "AIza" then return legacy end
+            if prov == "groq"and legacy:sub(1, 4) == "gsk_"then return legacy end
+            if prov == "gemini"and legacy:sub(1, 4) == "AIza"then return legacy end
         end
     end
     return ""
@@ -119,7 +119,7 @@ end
 
 function Settings:setApiKey(key, prov)
     prov = prov or self:getProvider()
-    self:save("api_key_" .. prov, key)
+    self:save("api_key_".. prov, key)
 end
 
 function Settings:importKeyFromFile()
@@ -134,7 +134,7 @@ function Settings:importKeyFromFile()
     local files_found = {}
 
     for idx, path in ipairs(paths) do
-        if lfs.attributes(path, "mode") == "file" then
+        if lfs.attributes(path, "mode") == "file"then
             local f = io.open(path, "r")
             if f then
                 local content = f:read("*a")
@@ -142,10 +142,10 @@ function Settings:importKeyFromFile()
                 if content and #content > 0 then
                     content = content:gsub("[%s]+", "")
                     table.insert(files_found, path)
-                    if path:match("groq") or content:sub(1, 4) == "gsk_" then
+                    if path:match("groq") or content:sub(1, 4) == "gsk_"then
                         self:setApiKey(content, "groq")
                         imported["groq"] = content
-                    elseif path:match("gemini") or content:sub(1, 4) == "AIza" then
+                    elseif path:match("gemini") or content:sub(1, 4) == "AIza"then
                         self:setApiKey(content, "gemini")
                         imported["gemini"] = content
                     end
@@ -185,7 +185,7 @@ end
 
 function Settings:getOutputDirectory()
     local default_dir = "/mnt/us/documents/DualRead"
-    if lfs.attributes("/mnt/us", "mode") == "directory" then
+    if lfs.attributes("/mnt/us", "mode") == "directory"then
         pcall(lfs.mkdir, "/mnt/us/documents")
         pcall(lfs.mkdir, "/mnt/us/documents/DualRead")
         return default_dir

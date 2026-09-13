@@ -19,14 +19,14 @@ end
 
 local function splitByChar(str, sep)
     local parts = {}
-    for match in (str .. sep):gmatch("(.-)" .. sep) do
+    for match in (str .. sep):gmatch("(.-)".. sep) do
         table.insert(parts, match)
     end
     return parts
 end
 
 local function stripMarkdown(s)
-    if not s then return "" end
+    if not s then return ""end
     return s:gsub("%*%*", ""):gsub("%*", ""):gsub("^[#%s]+", ""):gsub("^%s+", ""):gsub("%s+$", "")
 end
 
@@ -34,13 +34,13 @@ function Visualizer.formatDualReadCard(original_text, raw_ai_text, target_lang_n
     local out = {}
     table.insert(out, "==================================================")
     table.insert(out, "DUALREAD: BILINGUAL TRANSLATION")
-    table.insert(out, "Target Language: " .. (target_lang_name or "Serbian (Latin)"))
+    table.insert(out, "Target Language: ".. (target_lang_name or "Serbian (Latin)"))
     table.insert(out, "==================================================\n")
 
     table.insert(out, "--- ORIGINAL TEXT ---")
     local orig_lines = cleanLines(original_text)
     for _, l in ipairs(orig_lines) do
-        table.insert(out, "  " .. l)
+        table.insert(out, "".. l)
     end
     table.insert(out, "")
 
@@ -48,7 +48,7 @@ function Visualizer.formatDualReadCard(original_text, raw_ai_text, target_lang_n
     for idx, l in ipairs(lines) do
         if l:find("^|%s*%-") or l:find("^|%s*:") then
             -- skip table separator
-        elseif l:sub(1, 1) == "|" and l:sub(-1) == "|" then
+        elseif l:sub(1, 1) == "|"and l:sub(-1) == "|"then
             local raw_parts = splitByChar(l:sub(2, -2), "|")
             local parts = {}
             for _, p in ipairs(raw_parts) do
@@ -56,7 +56,7 @@ function Visualizer.formatDualReadCard(original_text, raw_ai_text, target_lang_n
                 if #clean > 0 then table.insert(parts, clean) end
             end
             local first_lower = parts[1] and parts[1]:lower() or ""
-            if first_lower ~= "element" and first_lower ~= "word" and first_lower ~= "term" and first_lower ~= "original" then
+            if first_lower ~= "element"and first_lower ~= "word"and first_lower ~= "term"and first_lower ~= "original"then
                 if #parts >= 3 then
                     table.insert(out, string.format("• %s: %s\n  %s\n", parts[1], parts[2], parts[3]))
                 elseif #parts == 2 then
@@ -73,7 +73,7 @@ function Visualizer.formatDualReadCard(original_text, raw_ai_text, target_lang_n
             if k and v then
                 table.insert(out, string.format("• %s:\n  %s\n", k, v))
             else
-                table.insert(out, "• " .. item)
+                table.insert(out, "• ".. item)
             end
         else
             table.insert(out, stripMarkdown(l))
@@ -86,15 +86,15 @@ end
 function Visualizer.formatGrammarCard(phrase, raw_ai_text, target_lang_name)
     local out = {}
     table.insert(out, "==================================================")
-    table.insert(out, "LINGUISTIC BREAKDOWN: " .. phrase:upper())
-    table.insert(out, "Language: " .. (target_lang_name or "Serbian (Latin)"))
+    table.insert(out, "LINGUISTIC BREAKDOWN: ".. phrase:upper())
+    table.insert(out, "Language: ".. (target_lang_name or "Serbian (Latin)"))
     table.insert(out, "==================================================\n")
 
     local lines = cleanLines(raw_ai_text)
     for idx, l in ipairs(lines) do
         if l:find("^|%s*%-") or l:find("^|%s*:") then
             -- skip
-        elseif l:sub(1, 1) == "|" and l:sub(-1) == "|" then
+        elseif l:sub(1, 1) == "|"and l:sub(-1) == "|"then
             local raw_parts = splitByChar(l:sub(2, -2), "|")
             local parts = {}
             for _, p in ipairs(raw_parts) do
@@ -102,7 +102,7 @@ function Visualizer.formatGrammarCard(phrase, raw_ai_text, target_lang_name)
                 if #clean > 0 then table.insert(parts, clean) end
             end
             local first_lower = parts[1] and parts[1]:lower() or ""
-            if first_lower ~= "element" and first_lower ~= "word" and first_lower ~= "item" then
+            if first_lower ~= "element"and first_lower ~= "word"and first_lower ~= "item"then
                 if #parts >= 3 then
                     table.insert(out, string.format("• %s (%s):\n  %s\n", parts[1], parts[2], parts[3]))
                 elseif #parts == 2 then
@@ -111,10 +111,10 @@ function Visualizer.formatGrammarCard(phrase, raw_ai_text, target_lang_name)
             end
         elseif l:find("^[#%*%-]*%s*[A-Z%s/&]+:") or l:find("^%*%*") then
             local header = stripMarkdown(l):gsub(":$", "")
-            table.insert(out, "\n--- " .. header:upper() .. " ---\n")
+            table.insert(out, "\n--- ".. header:upper() .. "---\n")
         elseif l:find("^[•%-%*]") then
             local item = stripMarkdown(l:gsub("^[•%-%*]%s*", ""))
-            table.insert(out, "• " .. item)
+            table.insert(out, "• ".. item)
         else
             table.insert(out, stripMarkdown(l))
         end

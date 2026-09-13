@@ -130,7 +130,7 @@ local function writeZipFile(entries, output_path)
 end
 
 local function escapeXml(str)
-    if not str then return "" end
+    if not str then return ""end
     return (str:gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;"):gsub('"', "&quot;"):gsub("'", "&apos;"))
 end
 
@@ -187,18 +187,18 @@ function EpubCompiler:compileBilingualEpub(book_title, author, pairs, target_lan
     local out_dir = self.settings:getOutputDirectory()
     local clean_title = (book_title or "BilingualBook"):gsub("%W+", "_")
     local epub_filename = string.format("DualRead_%s_%s.epub", clean_title, os.date("%Y%m%d"))
-    local epub_path = out_dir .. "/" .. epub_filename
+    local epub_path = out_dir .. "/".. epub_filename
 
     local entries = {}
 
     -- 1. mimetype (first, uncompressed)
-    table.insert(entries, { "mimetype", "application/epub+zip" })
+    table.insert(entries, { "mimetype", "application/epub+zip"})
 
     -- 2. META-INF/container.xml
-    local container_xml = [[<?xml version="1.0" encoding="UTF-8"?>
-<container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container">
+    local container_xml = [[<?xml version="1.0"encoding="UTF-8"?>
+<container version="1.0"xmlns="urn:oasis:names:tc:opendocument:xmlns:container">
   <rootfiles>
-    <rootfile full-path="OEBPS/content.opf" media-type="application/oebps-package+xml"/>
+    <rootfile full-path="OEBPS/content.opf"media-type="application/oebps-package+xml"/>
   </rootfiles>
 </container>]]
     table.insert(entries, { "META-INF/container.xml", container_xml })
@@ -207,12 +207,12 @@ function EpubCompiler:compileBilingualEpub(book_title, author, pairs, target_lan
     table.insert(entries, { "OEBPS/style.css", CSS_STYLE })
 
     -- 4. OEBPS/chapter_1.xhtml
-    local ch_html = string.format([[<?xml version="1.0" encoding="UTF-8"?>
+    local ch_html = string.format([[<?xml version="1.0"encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <title>%s (Bilingual Edition)</title>
-  <link rel="stylesheet" type="text/css" href="style.css"/>
+  <link rel="stylesheet"type="text/css"href="style.css"/>
 </head>
 <body>
   <div class="masthead">
@@ -234,17 +234,17 @@ function EpubCompiler:compileBilingualEpub(book_title, author, pairs, target_lan
     table.insert(entries, { "OEBPS/chapter_1.xhtml", ch_html })
 
     -- 5. OEBPS/toc.ncx
-    local ncx = string.format([[<?xml version="1.0" encoding="UTF-8"?>
-<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1">
+    local ncx = string.format([[<?xml version="1.0"encoding="UTF-8"?>
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/"version="2005-1">
   <head>
-    <meta name="dtb:uid" content="urn:uuid:dualread-%s"/>
-    <meta name="dtb:depth" content="1"/>
-    <meta name="dtb:totalPageCount" content="0"/>
-    <meta name="dtb:maxPageNumber" content="0"/>
+    <meta name="dtb:uid"content="urn:uuid:dualread-%s"/>
+    <meta name="dtb:depth"content="1"/>
+    <meta name="dtb:totalPageCount"content="0"/>
+    <meta name="dtb:maxPageNumber"content="0"/>
   </head>
   <docTitle><text>%s (Bilingual)</text></docTitle>
   <navMap>
-    <navPoint id="np-1" playOrder="1">
+    <navPoint id="np-1"playOrder="1">
       <navLabel><text>Bilingual Text</text></navLabel>
       <content src="chapter_1.xhtml"/>
     </navPoint>
@@ -253,8 +253,8 @@ function EpubCompiler:compileBilingualEpub(book_title, author, pairs, target_lan
     table.insert(entries, { "OEBPS/toc.ncx", ncx })
 
     -- 6. OEBPS/content.opf
-    local opf = string.format([[<?xml version="1.0" encoding="UTF-8"?>
-<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="BookID" version="2.0">
+    local opf = string.format([[<?xml version="1.0"encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf"unique-identifier="BookID"version="2.0">
   <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
     <dc:title>%s (Bilingual Parallel Edition)</dc:title>
     <dc:creator>DualRead for KOReader</dc:creator>
@@ -262,9 +262,9 @@ function EpubCompiler:compileBilingualEpub(book_title, author, pairs, target_lan
     <dc:identifier id="BookID">urn:uuid:dualread-%s</dc:identifier>
   </metadata>
   <manifest>
-    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
-    <item id="style" href="style.css" media-type="text/css"/>
-    <item id="ch1" href="chapter_1.xhtml" media-type="application/xhtml+xml"/>
+    <item id="ncx"href="toc.ncx"media-type="application/x-dtbncx+xml"/>
+    <item id="style"href="style.css"media-type="text/css"/>
+    <item id="ch1"href="chapter_1.xhtml"media-type="application/xhtml+xml"/>
   </manifest>
   <spine toc="ncx">
     <itemref idref="ch1"/>
@@ -276,7 +276,7 @@ function EpubCompiler:compileBilingualEpub(book_title, author, pairs, target_lan
     pcall(os.remove, epub_path)
     local ok, err = writeZipFile(entries, epub_path)
 
-    if ok and lfs.attributes(epub_path, "mode") == "file" then
+    if ok and lfs.attributes(epub_path, "mode") == "file"then
         return true, epub_path
     else
         return false, tostring(err or "Failed to compile EPUB")

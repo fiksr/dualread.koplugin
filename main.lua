@@ -43,13 +43,13 @@ function DualRead:onDispatcherRegisterActions()
     Dispatcher:registerAction("dualread", {
         category = "none",
         event = "ShowDualRead",
-        title = _("📖 DualRead"),
+        title = _("DualRead"),
         general = true,
     })
     Dispatcher:registerAction("dualread_generate", {
         category = "none",
         event = "GenerateDualRead",
-        title = _("✨ Generate Bilingual Edition"),
+        title = _("Generate Bilingual Edition"),
         general = true,
     })
 end
@@ -57,7 +57,7 @@ end
 function DualRead:onShowDualRead()
     local Menu = require("ui/widget/menu")
     local menu = Menu:new{
-        title = _("📖 DualRead"),
+        title = _("DualRead"),
         item_table = self:getSubMenuItems(),
         is_borderless = true,
     }
@@ -206,7 +206,7 @@ end
 
 function DualRead:addToMainMenu(menu_items)
     menu_items.dualread = {
-        text = _("📖 DualRead"),
+        text = _("DualRead"),
         sorting_hint = "more_tools",
         sub_item_table_func = function()
             return self:getSubMenuItems()
@@ -242,16 +242,16 @@ function DualRead:getSubMenuItems()
             sub_item_table = lang_items,
         },
         {
-            text = _("🔑 Import API Keys from Kindle Storage"),
+            text = _("Import API Keys from Kindle Storage"),
             callback = function()
                 local ok, imported, files = self.settings:importKeyFromFile()
                 if ok then
                     local lines = { _("Keys imported successfully:") }
                     for prov, key in pairs(imported) do
-                        local mask = #key > 8 and (key:sub(1, 4) .. "..." .. key:sub(-4)) or key
+                        local mask = #key > 8 and (key:sub(1, 4) .. "...".. key:sub(-4)) or key
                         table.insert(lines, string.format("• %s: %s", prov:upper(), mask))
                     end
-                    table.insert(lines, "\n" .. _("You can switch between Groq and Gemini anytime!"))
+                    table.insert(lines, "\n".. _("You can switch between Groq and Gemini anytime!"))
                     UIManager:show(InfoMessage:new{
                         text = table.concat(lines, "\n"),
                         timeout = 6,
@@ -271,27 +271,27 @@ function DualRead:getSubMenuItems()
             sub_item_table = {
                 {
                     text = _("Groq (Free & Blazing Fast)"),
-                    checked_func = function() return self.settings:getProvider() == "groq" end,
+                    checked_func = function() return self.settings:getProvider() == "groq"end,
                     callback = function() self.settings:setProvider("groq") end,
                 },
                 {
                     text = _("Google Gemini"),
-                    checked_func = function() return self.settings:getProvider() == "gemini" end,
+                    checked_func = function() return self.settings:getProvider() == "gemini"end,
                     callback = function() self.settings:setProvider("gemini") end,
                 },
                 {
                     text = _("OpenAI (GPT-4o-mini)"),
-                    checked_func = function() return self.settings:getProvider() == "openai" end,
+                    checked_func = function() return self.settings:getProvider() == "openai"end,
                     callback = function() self.settings:setProvider("openai") end,
                 },
                 {
                     text = _("DeepSeek (DeepSeek Chat)"),
-                    checked_func = function() return self.settings:getProvider() == "deepseek" end,
+                    checked_func = function() return self.settings:getProvider() == "deepseek"end,
                     callback = function() self.settings:setProvider("deepseek") end,
                 },
                 {
                     text = _("Local Ollama (100% Offline LAN)"),
-                    checked_func = function() return self.settings:getProvider() == "ollama" end,
+                    checked_func = function() return self.settings:getProvider() == "ollama"end,
                     callback = function() self.settings:setProvider("ollama") end,
                 },
             },
@@ -302,44 +302,44 @@ function DualRead:getSubMenuItems()
             end,
             sub_item_table_func = function()
                 local prov = self.settings:getProvider()
-                if prov == "gemini" then
+                if prov == "gemini"then
                     return {
                         {
                             text = _("Gemini 3.5 Flash-Lite (500 RPD Free)"),
-                            checked_func = function() return self.settings:getModel() == "gemini-3.5-flash-lite" end,
+                            checked_func = function() return self.settings:getModel() == "gemini-3.5-flash-lite"end,
                             callback = function() self.settings:setModel("gemini-3.5-flash-lite") end,
                         },
                         {
                             text = _("Gemini 2.5 Flash (20 RPD Free / Paid)"),
-                            checked_func = function() return self.settings:getModel() == "gemini-2.5-flash" end,
+                            checked_func = function() return self.settings:getModel() == "gemini-2.5-flash"end,
                             callback = function() self.settings:setModel("gemini-2.5-flash") end,
                         },
                         {
                             text = _("Gemini 3.8 Flash"),
-                            checked_func = function() return self.settings:getModel() == "gemini-3.8-flash" end,
+                            checked_func = function() return self.settings:getModel() == "gemini-3.8-flash"end,
                             callback = function() self.settings:setModel("gemini-3.8-flash") end,
                         },
                         {
                             text = _("Gemini 3.7 Flash"),
-                            checked_func = function() return self.settings:getModel() == "gemini-3.7-flash" end,
+                            checked_func = function() return self.settings:getModel() == "gemini-3.7-flash"end,
                             callback = function() self.settings:setModel("gemini-3.7-flash") end,
                         },
                     }
-                elseif prov == "groq" then
+                elseif prov == "groq"then
                     return {
                         {
                             text = _("GPT-OSS 120B (Recommended — 1K RPD, Best Quality)"),
-                            checked_func = function() return self.settings:getModel() == "openai/gpt-oss-120b" end,
+                            checked_func = function() return self.settings:getModel() == "openai/gpt-oss-120b"end,
                             callback = function() self.settings:setModel("openai/gpt-oss-120b") end,
                         },
                         {
                             text = _("Qwen 3.8 27B (1K RPD — Strong Reasoning)"),
-                            checked_func = function() return self.settings:getModel() == "qwen/qwen3.8-27b" end,
+                            checked_func = function() return self.settings:getModel() == "qwen/qwen3.8-27b"end,
                             callback = function() self.settings:setModel("qwen/qwen3.8-27b") end,
                         },
                         {
                             text = _("GPT-OSS 20B (1K RPD — Fast & Lightweight)"),
-                            checked_func = function() return self.settings:getModel() == "openai/gpt-oss-20b" end,
+                            checked_func = function() return self.settings:getModel() == "openai/gpt-oss-20b"end,
                             callback = function() self.settings:setModel("openai/gpt-oss-20b") end,
                         },
                     }
@@ -366,7 +366,7 @@ function DualRead:getSubMenuItems()
                 dialog = InputDialog:new{
                     title = string.format(_("Enter %s API Key"), prov:upper()),
                     input = cur_key,
-                    input_hint = prov == "groq" and "gsk_..." or (prov == "gemini" and "AIza..." or "API Key"),
+                    input_hint = prov == "groq"and "gsk_..."or (prov == "gemini"and "AIza..."or "API Key"),
                     buttons = {
                         {
                             {
