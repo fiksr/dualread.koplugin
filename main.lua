@@ -43,13 +43,13 @@ function DualRead:onDispatcherRegisterActions()
     Dispatcher:registerAction("dualread", {
         category = "none",
         event = "ShowDualRead",
-        title = _("DualRead"),
+        title = _("📖 DualRead"),
         general = true,
     })
     Dispatcher:registerAction("dualread_generate", {
         category = "none",
         event = "GenerateDualRead",
-        title = _("DualRead: Generate Bilingual Edition"),
+        title = _("✨ Generate Bilingual Edition"),
         general = true,
     })
 end
@@ -57,7 +57,7 @@ end
 function DualRead:onShowDualRead()
     local Menu = require("ui/widget/menu")
     local menu = Menu:new{
-        title = _("DualRead"),
+        title = _("📖 DualRead"),
         item_table = self:getSubMenuItems(),
         is_borderless = true,
     }
@@ -206,7 +206,7 @@ end
 
 function DualRead:addToMainMenu(menu_items)
     menu_items.dualread = {
-        text = _("DualRead"),
+        text = _("📖 DualRead"),
         sorting_hint = "more_tools",
         sub_item_table_func = function()
             return self:getSubMenuItems()
@@ -242,7 +242,7 @@ function DualRead:getSubMenuItems()
             sub_item_table = lang_items,
         },
         {
-            text = _("Import API Keys from Kindle Storage"),
+            text = _("🔑 Import API Keys from Kindle Storage"),
             callback = function()
                 local ok, imported, files = self.settings:importKeyFromFile()
                 if ok then
