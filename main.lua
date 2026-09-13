@@ -42,12 +42,10 @@ function DualRead:init()
     self.api = API:new(self.settings)
     self.compiler = EpubCompiler:new(self.settings)
 
-    -- Hook into the Reader's highlight dialog for instant bilingual translation
     if self.ui and self.ui.highlight then
         self:addToHighlightDialog()
     end
 
-    -- Register into KOReader's main menu
     if self.ui and self.ui.menu then
         self.ui.menu:registerToMainMenu(self)
     end
@@ -60,10 +58,9 @@ function DualRead:getBookTitle()
 end
 
 function DualRead:addToHighlightDialog()
-    -- 01: DualRead Translate & Learn
     self.ui.highlight:addToHighlightDialog("01_dualread_translate", function(this)
         return {
-            text = _("🌐 DualRead: Translate"),
+            text = _("DualRead: Translate"),
             callback = function()
                 this:highlightFromHoldPos()
                 if not (this.selected_text and this.selected_text.text) then return end
@@ -77,10 +74,9 @@ function DualRead:addToHighlightDialog()
         }
     end)
 
-    -- 02: DualRead Grammar & Idiom Breakdown
     self.ui.highlight:addToHighlightDialog("02_dualread_grammar", function(this)
         return {
-            text = _("🔍 DualRead: Grammar & Idiom"),
+            text = _("DualRead: Grammar & Idiom"),
             callback = function()
                 this:highlightFromHoldPos()
                 if not (this.selected_text and this.selected_text.text) then return end
@@ -99,10 +95,9 @@ function DualRead:onTranslateText(text)
     local target_lang = self.settings:getTargetLanguage()
     local book_title = self:getBookTitle()
 
-    -- Check offline cache
     local cached = self.settings:getCachedTranslation(text, target_lang)
     if cached and #cached > 0 then
-        Dialog.showTranslationCard(_("🌐 DualRead (Offline Cache)"), cached)
+        Dialog.showTranslationCard(_("DualRead (Offline Cache)"), cached)
         return
     end
 
@@ -115,7 +110,7 @@ function DualRead:onTranslateText(text)
         if raw_ai and #raw_ai > 0 then
             local formatted = Visualizer.formatDualReadCard(text, raw_ai, self.settings:getTargetLanguageInstruction())
             self.settings:saveCachedTranslation(text, target_lang, formatted)
-            Dialog.showTranslationCard(_("🌐 DualRead Translation"), formatted)
+            Dialog.showTranslationCard(_("DualRead: Translation"), formatted)
         else
             UIManager:show(InfoMessage:new{
                 text = string.format(_("Translation failed:\n%s"), tostring(err or "Unknown error")),
@@ -137,7 +132,7 @@ function DualRead:onExplainGrammar(phrase)
 
         if raw_ai and #raw_ai > 0 then
             local formatted = Visualizer.formatGrammarCard(phrase, raw_ai, self.settings:getTargetLanguageInstruction())
-            Dialog.showGrammarCard(_("🔍 DualRead: Grammar Breakdown"), formatted)
+            Dialog.showGrammarCard(_("DualRead: Grammar Breakdown"), formatted)
         else
             UIManager:show(InfoMessage:new{
                 text = string.format(_("Grammar analysis failed:\n%s"), tostring(err or "Unknown error")),
@@ -194,7 +189,7 @@ function DualRead:getSubMenuItems()
 
     for _, l in ipairs(self.settings:getLanguagesList()) do
         table.insert(lang_items, {
-            text = l.name,
+            text = l.name:gsub("^[%p%s]+", ""),
             checked_func = function() return self.settings:getTargetLanguage() == l.id end,
             callback = function() self.settings:setTargetLanguage(l.id) end,
         })
@@ -202,7 +197,7 @@ function DualRead:getSubMenuItems()
 
     return {
         {
-            text = _("🌐 Translate Custom Text / Phrase"),
+            text = _("Translate Custom Text / Phrase"),
             callback = function()
                 self:showCustomTranslateDialog()
             end,
@@ -210,12 +205,12 @@ function DualRead:getSubMenuItems()
         {
             text_func = function()
                 local target = self.settings:getTargetLanguageInstruction()
-                return string.format(_("🎯 Target Language: %s"), target)
+                return string.format(_("Target Language: %s"), target)
             end,
             sub_item_table = lang_items,
         },
         {
-            text = _("📥 Import API Keys from Kindle Storage"),
+            text = _("Import API Keys from Kindle Storage"),
             callback = function()
                 local ok, imported, files = self.settings:importKeyFromFile()
                 if ok then
@@ -239,7 +234,7 @@ function DualRead:getSubMenuItems()
         },
         {
             text_func = function()
-                return string.format(_("🤖 Provider: %s (%s)"), self.settings:getProvider():upper(), self.settings:getModel())
+                return string.format(_("AI Provider: %s (%s)"), self.settings:getProvider():upper(), self.settings:getModel())
             end,
             sub_item_table = {
                 {
@@ -271,7 +266,7 @@ function DualRead:getSubMenuItems()
         },
         {
             text_func = function()
-                return string.format(_("🧠 Model: %s"), self.settings:getModel())
+                return string.format(_("AI Model: %s"), self.settings:getModel())
             end,
             sub_item_table_func = function()
                 local prov = self.settings:getProvider()
@@ -329,8 +324,8 @@ function DualRead:getSubMenuItems()
             text_func = function()
                 local prov = self.settings:getProvider()
                 local cur_key = self.settings:getApiKey(prov)
-                local status = (#cur_key > 0) and _("✓ configured") or _("✗ not set")
-                return string.format(_("⌨️ %s Key (%s)"), prov:upper(), status)
+                local status = (#cur_key > 0) and _("configured") or _("not set")
+                return string.format(_("Edit %s Key (%s)"), prov:upper(), status)
             end,
             callback = function()
                 local prov = self.settings:getProvider()
@@ -368,7 +363,7 @@ function DualRead:getSubMenuItems()
             end,
         },
         {
-            text = _("📁 Browse Parallel Editions Archive"),
+            text = _("Browse Parallel Editions Archive"),
             callback = function()
                 local out_dir = self.settings:getOutputDirectory()
                 if self.ui and self.ui.onOpenFile then
@@ -382,7 +377,7 @@ function DualRead:getSubMenuItems()
             end,
         },
         {
-            text = _("🧹 Clear Offline Translation Cache"),
+            text = _("Clear Offline Translation Cache"),
             callback = function()
                 self.settings:clearCache()
                 UIManager:show(InfoMessage:new{ text = _("DualRead cache cleared."), timeout = 2 })

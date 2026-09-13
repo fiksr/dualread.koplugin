@@ -26,7 +26,7 @@ end
 
 function Dialog.showTranslationCard(title, text)
     local viewer = TextViewer:new{
-        title = title or _("🌐 DualRead Translation"),
+        title = title or _("DualRead: Translation"),
         text = text,
         text_type = "general",
     }
@@ -35,7 +35,7 @@ end
 
 function Dialog.showGrammarCard(title, text)
     local viewer = TextViewer:new{
-        title = title or _("🔍 DualRead Grammar Breakdown"),
+        title = title or _("DualRead: Grammar Breakdown"),
         text = text,
         text_type = "general",
     }
