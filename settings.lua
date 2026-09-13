@@ -110,8 +110,8 @@ function Settings:getApiKey(prov)
 
         local legacy = G_reader_settings:readSetting("bookrecap_api_key")
         if legacy and #legacy > 0 then
-            if prov == "groq"and legacy:sub(1, 4) == "gsk_"then return legacy end
-            if prov == "gemini"and legacy:sub(1, 4) == "AIza"then return legacy end
+            if prov == "groq" and legacy:sub(1, 4) == "gsk_" then return legacy end
+            if prov == "gemini" and legacy:sub(1, 4) == "AIza" then return legacy end
         end
     end
     return ""
@@ -134,7 +134,7 @@ function Settings:importKeyFromFile()
     local files_found = {}
 
     for idx, path in ipairs(paths) do
-        if lfs.attributes(path, "mode") == "file"then
+        if lfs.attributes(path, "mode") == "file" then
             local f = io.open(path, "r")
             if f then
                 local content = f:read("*a")
@@ -142,10 +142,10 @@ function Settings:importKeyFromFile()
                 if content and #content > 0 then
                     content = content:gsub("[%s]+", "")
                     table.insert(files_found, path)
-                    if path:match("groq") or content:sub(1, 4) == "gsk_"then
+                    if path:match("groq") or content:sub(1, 4) == "gsk_" then
                         self:setApiKey(content, "groq")
                         imported["groq"] = content
-                    elseif path:match("gemini") or content:sub(1, 4) == "AIza"then
+                    elseif path:match("gemini") or content:sub(1, 4) == "AIza" then
                         self:setApiKey(content, "gemini")
                         imported["gemini"] = content
                     end
@@ -185,7 +185,7 @@ end
 
 function Settings:getOutputDirectory()
     local default_dir = "/mnt/us/documents/DualRead"
-    if lfs.attributes("/mnt/us", "mode") == "directory"then
+    if lfs.attributes("/mnt/us", "mode") == "directory" then
         pcall(lfs.mkdir, "/mnt/us/documents")
         pcall(lfs.mkdir, "/mnt/us/documents/DualRead")
         return default_dir

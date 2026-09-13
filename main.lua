@@ -103,8 +103,7 @@ function DualRead:addToHighlightDialog()
 
                 self:onTranslateText(text)
             end,
-        }
-    end)
+        } end)
 
     self.ui.highlight:addToHighlightDialog("02_dualread_grammar", function(this)
         return {
@@ -119,8 +118,7 @@ function DualRead:addToHighlightDialog()
 
                 self:onExplainGrammar(text)
             end,
-        }
-    end)
+        } end)
 end
 
 function DualRead:onTranslateText(text)
@@ -212,8 +210,7 @@ function DualRead:addToMainMenu(menu_items)
             return self:getSubMenuItems()
         end,
         sub_item_table = self:getSubMenuItems(),
-    }
-end
+    } end
 
 function DualRead:getSubMenuItems()
     local lang_items = {}
@@ -271,27 +268,27 @@ function DualRead:getSubMenuItems()
             sub_item_table = {
                 {
                     text = _("Groq (Free & Blazing Fast)"),
-                    checked_func = function() return self.settings:getProvider() == "groq"end,
+                    checked_func = function() return self.settings:getProvider() == "groq" end,
                     callback = function() self.settings:setProvider("groq") end,
                 },
                 {
                     text = _("Google Gemini"),
-                    checked_func = function() return self.settings:getProvider() == "gemini"end,
+                    checked_func = function() return self.settings:getProvider() == "gemini" end,
                     callback = function() self.settings:setProvider("gemini") end,
                 },
                 {
                     text = _("OpenAI (GPT-4o-mini)"),
-                    checked_func = function() return self.settings:getProvider() == "openai"end,
+                    checked_func = function() return self.settings:getProvider() == "openai" end,
                     callback = function() self.settings:setProvider("openai") end,
                 },
                 {
                     text = _("DeepSeek (DeepSeek Chat)"),
-                    checked_func = function() return self.settings:getProvider() == "deepseek"end,
+                    checked_func = function() return self.settings:getProvider() == "deepseek" end,
                     callback = function() self.settings:setProvider("deepseek") end,
                 },
                 {
                     text = _("Local Ollama (100% Offline LAN)"),
-                    checked_func = function() return self.settings:getProvider() == "ollama"end,
+                    checked_func = function() return self.settings:getProvider() == "ollama" end,
                     callback = function() self.settings:setProvider("ollama") end,
                 },
             },
@@ -302,55 +299,53 @@ function DualRead:getSubMenuItems()
             end,
             sub_item_table_func = function()
                 local prov = self.settings:getProvider()
-                if prov == "gemini"then
+                if prov == "gemini" then
                     return {
                         {
                             text = _("Gemini 3.5 Flash-Lite (500 RPD Free)"),
-                            checked_func = function() return self.settings:getModel() == "gemini-3.5-flash-lite"end,
+                            checked_func = function() return self.settings:getModel() == "gemini-3.5-flash-lite" end,
                             callback = function() self.settings:setModel("gemini-3.5-flash-lite") end,
                         },
                         {
                             text = _("Gemini 2.5 Flash (20 RPD Free / Paid)"),
-                            checked_func = function() return self.settings:getModel() == "gemini-2.5-flash"end,
+                            checked_func = function() return self.settings:getModel() == "gemini-2.5-flash" end,
                             callback = function() self.settings:setModel("gemini-2.5-flash") end,
                         },
                         {
                             text = _("Gemini 3.8 Flash"),
-                            checked_func = function() return self.settings:getModel() == "gemini-3.8-flash"end,
+                            checked_func = function() return self.settings:getModel() == "gemini-3.8-flash" end,
                             callback = function() self.settings:setModel("gemini-3.8-flash") end,
                         },
                         {
                             text = _("Gemini 3.7 Flash"),
-                            checked_func = function() return self.settings:getModel() == "gemini-3.7-flash"end,
+                            checked_func = function() return self.settings:getModel() == "gemini-3.7-flash" end,
                             callback = function() self.settings:setModel("gemini-3.7-flash") end,
                         },
                     }
-                elseif prov == "groq"then
+                elseif prov == "groq" then
                     return {
                         {
                             text = _("GPT-OSS 120B (Recommended — 1K RPD, Best Quality)"),
-                            checked_func = function() return self.settings:getModel() == "openai/gpt-oss-120b"end,
+                            checked_func = function() return self.settings:getModel() == "openai/gpt-oss-120b" end,
                             callback = function() self.settings:setModel("openai/gpt-oss-120b") end,
                         },
                         {
                             text = _("Qwen 3.8 27B (1K RPD — Strong Reasoning)"),
-                            checked_func = function() return self.settings:getModel() == "qwen/qwen3.8-27b"end,
+                            checked_func = function() return self.settings:getModel() == "qwen/qwen3.8-27b" end,
                             callback = function() self.settings:setModel("qwen/qwen3.8-27b") end,
                         },
                         {
                             text = _("GPT-OSS 20B (1K RPD — Fast & Lightweight)"),
-                            checked_func = function() return self.settings:getModel() == "openai/gpt-oss-20b"end,
+                            checked_func = function() return self.settings:getModel() == "openai/gpt-oss-20b" end,
                             callback = function() self.settings:setModel("openai/gpt-oss-20b") end,
                         },
-                    }
-                end
+                    } end
                 return {
                     {
                         text = string.format(_("Current: %s"), self.settings:getModel()),
                         enabled = false,
                     },
-                }
-            end,
+                } end,
         },
         {
             text_func = function()
@@ -366,7 +361,7 @@ function DualRead:getSubMenuItems()
                 dialog = InputDialog:new{
                     title = string.format(_("Enter %s API Key"), prov:upper()),
                     input = cur_key,
-                    input_hint = prov == "groq"and "gsk_..."or (prov == "gemini"and "AIza..."or "API Key"),
+                    input_hint = prov == "groq" and "gsk_..." or (prov == "gemini" and "AIza..." or "API Key"),
                     buttons = {
                         {
                             {
@@ -415,7 +410,6 @@ function DualRead:getSubMenuItems()
                 UIManager:show(InfoMessage:new{ text = _("DualRead cache cleared."), timeout = 2 })
             end,
         },
-    }
-end
+    } end
 
 return DualRead

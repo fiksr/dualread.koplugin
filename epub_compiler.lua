@@ -130,7 +130,7 @@ local function writeZipFile(entries, output_path)
 end
 
 local function escapeXml(str)
-    if not str then return ""end
+    if not str then return "" end
     return (str:gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;"):gsub('"', "&quot;"):gsub("'", "&apos;"))
 end
 
@@ -276,7 +276,7 @@ function EpubCompiler:compileBilingualEpub(book_title, author, pairs, target_lan
     pcall(os.remove, epub_path)
     local ok, err = writeZipFile(entries, epub_path)
 
-    if ok and lfs.attributes(epub_path, "mode") == "file"then
+    if ok and lfs.attributes(epub_path, "mode") == "file" then
         return true, epub_path
     else
         return false, tostring(err or "Failed to compile EPUB")
