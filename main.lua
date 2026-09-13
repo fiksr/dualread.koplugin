@@ -4,6 +4,7 @@ Provides instant bilingual paragraph translation, idiom extraction, and parallel
 --]]--
 
 local Device = require("device")
+local Dispatcher = require("dispatcher")
 local InfoMessage = require("ui/widget/infomessage")
 local InputDialog = require("ui/widget/inputdialog")
 local UIManager = require("ui/uimanager")
@@ -37,10 +38,41 @@ local DualRead = WidgetContainer:extend{
     is_doc_only = false,
 }
 
+
+function DualRead:onDispatcherRegisterActions()
+    Dispatcher:registerAction("dualread", {
+        category = "none",
+        event = "ShowDualRead",
+        title = _("DualRead"),
+        general = true,
+    })
+    Dispatcher:registerAction("dualread_generate", {
+        category = "none",
+        event = "GenerateDualRead",
+        title = _("DualRead: Generate Bilingual Edition"),
+        general = true,
+    })
+end
+
+function DualRead:onShowDualRead()
+    local Menu = require("ui/widget/menu")
+    local menu = Menu:new{
+        title = _("DualRead"),
+        item_table = self:getSubMenuItems(),
+        is_borderless = true,
+    }
+    UIManager:show(menu)
+end
+
+function DualRead:onGenerateDualRead()
+    self:onGenerateBilingualBook()
+end
+
 function DualRead:init()
     self.settings = Settings:new()
     self.api = API:new(self.settings)
     self.compiler = EpubCompiler:new(self.settings)
+    self:onDispatcherRegisterActions()
 
     if self.ui and self.ui.highlight then
         self:addToHighlightDialog()
