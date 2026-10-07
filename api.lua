@@ -93,7 +93,7 @@ function API:sendChat(messages, system_prompt, max_tokens)
     local payload = {
         model = model,
         messages = all_messages,
-        temperature = 0.2,
+        temperature = (provider ~= "gemini") and 0.2 or nil,
         max_tokens = max_tokens,
     }
 
